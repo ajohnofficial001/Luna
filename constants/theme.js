@@ -2,7 +2,7 @@ const COLORS = {
   // Replacing the original primary, secondary, etc. with pink-based colors
   primary: "#d63384",    // Main bright pink
   secondary: "#FFE6F2",  // Light pink background
-  tertiary: "#FF7754",   // Could keep or swap for a different accent color
+  tertiary: "#FF74A8" ,   // Could keep or swap for a different accent color
 
   gray: "#83829A",
   gray2: "#C1C0C8",
