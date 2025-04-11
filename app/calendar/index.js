@@ -1,210 +1,203 @@
-import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions
-} from 'react-native';
+import React, { useState } from "react";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { Stack } from "expo-router";
+import { Calendar } from "react-native-calendars";
 
-const pinkColor = '#d63384';
-const lightPink = '#FFE6F2';
+const pinkColor = "#d63384";
+const lightPink = "#FFE6F2";
 
-const InsightsView = () => {
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
+export default function CalendarScreen() {
+  // Mark 5 generic events on specific days in Feb 2025:
+const [markedDays, setMarkedDays] = useState({
+    "2025-04-01": {
+        selected: true,
+        selectedColor: pinkColor,
+        marked: true,
+        dotColor: pinkColor,
+        event: "Cycle Day 1 (Menstrual Start)"
+    },
+    "2025-04-14": {
+        marked: true,
+        dotColor: pinkColor,
+        event: "Possible Ovulation Day"
+    },
+    "2025-04-18": {
+        marked: true,
+        dotColor: "#FF7754",
+        event: "Yoga Class"
+    },
+    "2025-04-22": {
+        marked: true,
+        dotColor: "#FFA6C9",
+        event: "Medication Refill"
+    },
+    "2025-04-27": {
+        marked: true,
+        dotColor: "#FF7754",
+        event: "Doctor Appointment"
+    },
+});
 
-  // Example data placeholders
-  const [hormoneTrend] = useState(['FSH', 'LH', 'Estrogen']);
-  const [cyclePredictions] = useState(['Ovulation in 5 days', 'Next period in 12 days']);
-  const [stressData] = useState([
-    { day: 'Mon', level: 'Low' },
-    { day: 'Tue', level: 'Mid' },
-    { day: 'Wed', level: 'High' },
-    { day: 'Thu', level: 'Mid' },
-    { day: 'Fri', level: 'Low' },
-  ]);
+  // Local state to track which event is selected
+  const [selectedInfo, setSelectedInfo] = useState("");
 
-  const handleNavPress = (screenName) => {
-    console.log(`Navigating to: ${screenName}`);
+  const handleDayPress = (day) => {
+    const dateKey = day.dateString;
+    // If the date is in markedDays and has an event, show that
+    if (markedDays[dateKey] && markedDays[dateKey].event) {
+      setSelectedInfo(`On ${dateKey}: ${markedDays[dateKey].event}`);
+    } else {
+      setSelectedInfo(`No event on ${dateKey}`);
+    }
   };
 
+  // Build a list of events from markedDays for a mini upcoming section
+  const eventList = Object.entries(markedDays)
+    .map(([date, info]) => {
+      if (info.event) {
+        return { date, event: info.event };
+      }
+      return null;
+    })
+    .filter(Boolean);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={[styles.mainContent, { minHeight: screenHeight }]}>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={styles.scrollContentContainer}
-        >
-          {/* Title */}
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Insights</Text>
-            <Text style={styles.subtitle}>Analyze Your Patterns</Text>
-          </View>
+    <>
+      <Stack.Screen options={{ headerTitle: "Calendar" }} />
 
-          {/* Hormone Trend Section */}
-          <View style={styles.sectionBox}>
-            <Text style={styles.sectionTitle}>Hormone Levels Over Time</Text>
-            <View style={styles.sectionBody}>
-              <Text style={styles.sectionDesc}>
-                Here’s a look at your average hormone levels this week:
-              </Text>
-              {/* Example horizontal list or placeholders */}
-              <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                {hormoneTrend.map((hormone, index) => (
-                  <View key={index} style={styles.hormonePill}>
-                    <Text style={{ color: pinkColor, fontWeight: '600' }}>
-                      {hormone}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-              {/* You might integrate a chart library here */}
-              <View style={[styles.barContainer, { marginTop: 15 }]}>
-                {/* This pink bar is just a placeholder */}
-                <View style={[styles.barFill, { width: screenWidth * 0.5 }]} />
-              </View>
-            </View>
-          </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>My Calendar</Text>
+        <Text style={styles.subtitle}>Track Your Cycle and Events</Text>
 
-          {/* Cycle Predictions Section */}
-          <View style={styles.sectionBox}>
-            <Text style={styles.sectionTitle}>Cycle Predictions</Text>
-            <View style={styles.sectionBody}>
-              {cyclePredictions.map((prediction, i) => (
-                <Text key={i} style={styles.sectionDesc}>
-                  • {prediction}
-                </Text>
-              ))}
-              {/* Another bar example */}
-              <View style={[styles.barContainer, { marginTop: 10 }]}>
-                <View style={[styles.barFill, { width: screenWidth * 0.3 }]} />
-              </View>
-            </View>
-          </View>
+        <View style={styles.calendarCard}>
+          <Calendar
+            onDayPress={handleDayPress}
+            markedDates={markedDays}
+            // Pink theme
+            theme={{
+              calendarBackground: lightPink,
+              monthTextColor: pinkColor,
+              textSectionTitleColor: pinkColor,
+              dayTextColor: "#333",
+              dotColor: pinkColor,
+              selectedDayBackgroundColor: pinkColor,
+              selectedDayTextColor: "#fff",
+              todayTextColor: "#ff7754",
+              arrowColor: pinkColor,
+              textMonthFontWeight: "700",
+              textDayFontSize: 14,
+              textMonthFontSize: 16,
+              textDayHeaderFontSize: 12,
+            }}
+            style={{
+              borderRadius: 10,
+              padding: 10,
+            }}
+            // e.g. start on Feb. 2025:
+            initialDate="2025-02-01"
+          />
+        </View>
 
-          {/* Stress Over Time Section */}
-          <View style={styles.sectionBox}>
-            <Text style={styles.sectionTitle}>Stress Over Time</Text>
-            <View style={styles.sectionBody}>
-              <Text style={styles.sectionDesc}>
-                Your stress levels for this workweek:
-              </Text>
-              {stressData.map(({ day, level }, idx) => (
-                <Text key={idx} style={styles.sectionDesc}>
-                  {day}: {level}
-                </Text>
-              ))}
-              {/* Additional placeholder bar */}
-              <View style={[styles.barContainer, { marginTop: 10 }]}>
-                <View style={[styles.barFill, { width: screenWidth * 0.4 }]} />
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
+        <Text style={styles.infoText}>
+          Tap on any date to see details, track your cycle, or manage events.
+        </Text>
 
-    </SafeAreaView>
+        {/* Show the selected event info below */}
+        {selectedInfo ? (
+          <View style={styles.selectedBox}>
+            <Text style={styles.selectedInfoText}>{selectedInfo}</Text>
+          </View>
+        ) : null}
+
+        {/* Section listing significance of each marked date */}
+        <View style={styles.eventsSection}>
+          <Text style={styles.eventsSectionTitle}>Upcoming Events</Text>
+          {eventList.length === 0 ? (
+            <Text style={styles.noEventsText}>No events scheduled.</Text>
+          ) : (
+            eventList.map((item) => (
+              <View key={item.date} style={styles.eventItem}>
+                <Text style={styles.eventDate}>{item.date}</Text>
+                <Text style={styles.eventName}>{item.event}</Text>
+              </View>
+            ))
+          )}
+        </View>
+      </ScrollView>
+    </>
   );
-};
-
-export default InsightsView;
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
-  mainContent: {
-    flex: 1
-  },
-  scrollContentContainer: {
-    paddingBottom: 20
-  },
-  titleContainer: {
-    backgroundColor: lightPink,
-    paddingVertical: 16,
-    paddingHorizontal: 20
+    paddingBottom: 80, // padding so it doesn't hide behind pinned footer
+    backgroundColor: "#fff",
+    paddingHorizontal: 20,
+    paddingTop: 16
   },
   title: {
     fontSize: 20,
     color: pinkColor,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 4
   },
   subtitle: {
     fontSize: 14,
-    color: '#333'
+    color: "#333",
+    marginBottom: 16
   },
-  sectionBox: {
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
-    marginTop: 15,
+  calendarCard: {
+    backgroundColor: lightPink,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20
+  },
+  infoText: {
+    fontSize: 14,
+    color: "#555",
+    lineHeight: 20,
+    marginBottom: 20
+  },
+  selectedBox: {
+    backgroundColor: lightPink,
     borderRadius: 10,
     padding: 12,
-    shadowColor: pinkColor,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 2
+    marginBottom: 20
   },
-  sectionTitle: {
+  selectedInfoText: {
+    fontSize: 14,
+    color: pinkColor,
+    fontWeight: "600"
+  },
+  eventsSection: {
+    backgroundColor: lightPink,
+    borderRadius: 10,
+    padding: 12
+  },
+  eventsSectionTitle: {
     fontSize: 16,
     color: pinkColor,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 8
   },
-  sectionBody: {
-    marginTop: 2
+  noEventsText: {
+    fontSize: 14,
+    color: "#666"
   },
-  sectionDesc: {
-    fontSize: 13,
-    color: '#666',
-    marginTop: 4,
-    lineHeight: 18
+  eventItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8
   },
-  hormonePill: {
-    backgroundColor: '#FFE6F2',
-    borderRadius: 15,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    marginRight: 8
+  eventDate: {
+    fontSize: 14,
+    color: pinkColor,
+    fontWeight: "600",
+    marginRight: 10,
+    width: 90
   },
-  barContainer: {
-    height: 8,
-    backgroundColor: '#FFE6F2',
-    borderRadius: 4
-  },
-  barFill: {
-    backgroundColor: '#d63384',
-    height: 8,
-    borderRadius: 4
-  },
-
-  /* Footer Nav */
-  footerNav: {
-    flexDirection: 'row',
-    backgroundColor: '#d63384',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    position: 'absolute',
-    bottom: 0, left: 0, right: 0
-  },
-  navItem: {
-    alignItems: 'center'
-  },
-  navEmoji: {
-    fontSize: 24,
-    marginBottom: 2,
-    color: '#fff'
-  },
-  navText: {
-    fontSize: 12,
-    color: '#fff',
-    fontWeight: '600'
+  eventName: {
+    fontSize: 14,
+    color: "#333"
   }
 });
-

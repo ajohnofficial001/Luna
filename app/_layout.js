@@ -98,7 +98,7 @@ const Layout = () => {
 
             {/* Pinned Footer Nav */}
             <View style={styles.footerNav}>
-              <TouchableOpacity style={styles.navItem} onPress={() => handleNavPress("/index")}>
+              <TouchableOpacity style={styles.navItem} onPress={() => handleNavPress("/")}>
                 <Text style={styles.navEmoji}>🏠</Text>
                 <Text style={styles.navText}>Home</Text>
               </TouchableOpacity>

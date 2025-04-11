@@ -14,9 +14,11 @@ import Specifics from "./jobdetails/specifics/Specifics";
 
 // common
 import NearbyJobCard from "./common/cards/nearby/NearbyJobCard";
+import InsightsView from "./insight/insightView";
 
 export {
   ScreenHeaderBtn,
+  InsightsView,
   Welcome,
   DashboardView,
   Popularjobs,
