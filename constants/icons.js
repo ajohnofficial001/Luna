@@ -10,6 +10,8 @@ import chevronLeft from "../assets/icons/chevron-left.png"
 import chevronRight from "../assets/icons/chevron-right.png"
 import logo from "../assets/images/logo.png"
 import microphone from "../assets/icons/microphone.png"
+import chatbot from "../assets/icons/chatbot.png"
+import close from "../assets/icons/close.jpeg"
 
 export default {
   heart,
@@ -24,5 +26,7 @@ export default {
   chevronRight,
   logo,
   microphone,
+  chatbot,
+  close,
 }
 

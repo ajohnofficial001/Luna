@@ -32,7 +32,7 @@ const ChatbotOverlay = ({ isVisible, onClose }) => {
   const [messages, setMessages] = useState([
     {
       id: "1",
-      text: "Hi there! I'm your NextUp assistant. I can help you find jobs matching your skills or improve your resume. What can I help you with today?",
+      text: "Hi there! I'm Luna, your friendly AI health companion. I can help monitor your stress, suggest personalized self-care tips, celebrate your daily wins, and offer gentle reminders—like hydration or cycle updates. How can I support your wellness journey today?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -46,12 +46,12 @@ const ChatbotOverlay = ({ isVisible, onClose }) => {
   const flatListRef = useRef(null)
 
   // Suggested questions for quick access
-  const suggestedQuestions = [
-    "Find jobs for my skills",
-    "Help improve my resume",
-    "Job interview tips",
-    "Salary negotiation advice",
-  ]
+const suggestedQuestions = [
+  "Give me a quick self-care tip",
+  "How can I reduce stress right now?",
+  "What's my health insight for today?",
+];
+
 
   // Replace the useEffect for voice setup with this platform-aware version
   useEffect(() => {
@@ -327,7 +327,7 @@ const ChatbotOverlay = ({ isVisible, onClose }) => {
             <View style={styles.chatHeaderContent}>
               <View style={styles.chatHeaderLeft}>
                 <Image source={icons.menu} style={[styles.chatIcon, { tintColor: COLORS.white }]} />
-                <Text style={styles.chatTitle}>JobHelp Assistant</Text>
+                <Text style={styles.chatTitle}>Luna</Text>
               </View>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>×</Text>
@@ -424,9 +424,9 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 50,
     justifyContent: "flex-end",
-    zIndex: 1000,
+    zIndex: 5000,
   },
   keyboardAvoidingView: {
     flex: 1,

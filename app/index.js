@@ -176,6 +176,12 @@ const Home = () => {
         </View>
       </ScrollView>
 
+      {/* Chatbot Button */}
+      <ChatbotButton onPress={toggleChatbot} isActive={isChatbotVisible} />
+
+      {/* Chatbot Overlay */}
+      <ChatbotOverlay isVisible={isChatbotVisible} onClose={() => setIsChatbotVisible(false)} />      
+
       {/* Footer Navigation pinned to bottom */}
       <View style={styles.footerNav}>
         <TouchableOpacity style={styles.navItem} onPress={() => handleNavPress("Dashboard")}>

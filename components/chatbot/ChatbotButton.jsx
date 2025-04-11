@@ -1,8 +1,9 @@
 "use client"
 
 import React from "react"
-import { TouchableOpacity, Text, StyleSheet, Animated } from "react-native"
-import { COLORS, FONT, SIZES, SHADOWS } from "../../constants"
+import { TouchableOpacity, StyleSheet, Animated, Image } from "react-native"
+import { COLORS, FONT, SIZES, icons, SHADOWS } from "../../constants"
+
 
 const ChatbotButton = ({ onPress, isActive }) => {
   const pulseAnim = React.useRef(new Animated.Value(1)).current
@@ -40,7 +41,11 @@ const ChatbotButton = ({ onPress, isActive }) => {
   return (
     <Animated.View style={[styles.buttonContainer, { transform: [{ scale: pulseAnim }] }]}>
       <TouchableOpacity style={[styles.button, isActive && styles.activeButton]} onPress={onPress} activeOpacity={0.8}>
-        <Text style={styles.buttonText}>{isActive ? "×" : "💬"}</Text>
+        {isActive ? (
+          <Image source={icons.close} style={styles.closeIcon} />
+        ) : (
+          <Image source={icons.chatbot} style={styles.chatbotIcon} />
+        )}
       </TouchableOpacity>
     </Animated.View>
   )
@@ -65,12 +70,16 @@ const styles = StyleSheet.create({
   activeButton: {
     backgroundColor: COLORS.gray,
   },
-  buttonText: {
-    fontSize: SIZES.xLarge,
-    color: COLORS.white,
-    fontFamily: FONT.bold,
+  chatbotIcon: {
+    width: 40,
+    height: 40,
+    resizeMode: "contain",
+  },
+  closeIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: "contain",
   },
 })
 
 export default ChatbotButton
-
